@@ -1,0 +1,55 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <script src="//lonekorean.github.io/highlight-within-textarea/jquery.highlight-within-textarea.js"></script>
+    <link href="//lonekorean.github.io/highlight-within-textarea/jquery.highlight-within-textarea.css" rel="stylesheet">
+
+    <script>
+
+        $.getJSON( "verbs.json", function( data ) {
+            var $textarea = $('textarea');
+
+            function getHighlight(input) {
+                var ret=[];
+                var sentence = input.split(" ");
+                sentence.forEach(function (element) {
+                    var idx = data.indexOf(element);
+                    if(idx>0) {
+                        ret.push(data[idx])
+                    }
+                });
+
+                return ret;
+            }
+
+                $textarea.keydown(function ( event ) {
+                    if("." == event.key) {
+                        var text = $textarea.val();
+                        var replace = getHighlight(text);
+                        replace.forEach(function (element) {
+                            text = text.replace(element, "squanch");
+                            $textarea.val(text);
+                        });
+                    }
+                });
+
+                $textarea.highlightWithinTextarea({
+                    highlight: getHighlight
+                });
+        });
+
+
+    </script>
+</head>
+
+
+
+<div class="container">
+    <textarea></textarea>
+</div>
+</html>
